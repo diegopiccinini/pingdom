@@ -24,5 +24,10 @@ describe Pingdom::Client do
 
   end
 
+  describe "#checks" do
+
+    it { expect(subject.checks.body).to include "counts" }
+
+  end
 end
 

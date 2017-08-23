@@ -15,12 +15,24 @@ module Pingdom
     end
 
     def has_connection?
+      checks( params: { limit: 1 } ).status == 200
+    end
+
+    def checks params: {}
+      get params: params, path: '/checks'
+    end
+
+    private
+
+    def get( params: {} , path: '' )
+
       response=conn.get do |req|
-        req.url '/api/2.0/checks'
+        req.url "/api/#{ENV['PINGDOM_API_VERSION'] || '2.0'}#{path}"
+        req.params=params
         req.headers['Content-Type'] = 'application/json'
         req.headers['App-Key'] = key
       end
-      response.status == 200
+
     end
 
   end
