@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "pingdom"
   spec.version       = Pingdom::VERSION
   spec.authors       = ["Diego Piccinini Lagos"]
-  spec.email         = ["dlagos@bookingbug.com"]
+  spec.email         = ["diego@guiasrails.es"]
 
   spec.summary       = %q{Get data for the pingdom API}
   spec.description   = %q{Set up the username, password and key using dotenv. Get checks, results}
