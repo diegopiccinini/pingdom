@@ -1,11 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Pingdom do
+describe Pingdom do
   it "has a version number" do
     expect(Pingdom::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
   end
 end
