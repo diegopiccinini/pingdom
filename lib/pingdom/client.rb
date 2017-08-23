@@ -1,4 +1,5 @@
 require 'faraday'
+require 'pingdom/check'
 
 module Pingdom
 
@@ -15,18 +16,19 @@ module Pingdom
     end
 
     def has_connection?
-      checks( params: { limit: 1 } ).status == 200
+      checks( params: { limit: 1 } )
+      !Check.error?
     end
 
     def checks params: {}
-      get params: params, path: '/checks'
+      Check.parse get params: params, path: '/checks'
     end
 
     private
 
     def get( params: {} , path: '' )
 
-      response=conn.get do |req|
+      conn.get do |req|
         req.url "/api/#{ENV['PINGDOM_API_VERSION'] || '2.0'}#{path}"
         req.params=params
         req.headers['Content-Type'] = 'application/json'
