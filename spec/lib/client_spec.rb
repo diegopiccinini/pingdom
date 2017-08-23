@@ -17,5 +17,12 @@ describe Pingdom::Client do
     end
 
   end
+
+  describe "#has_connection?" do
+
+    it { expect(subject.has_connection?).to be true }
+
+  end
+
 end
 
