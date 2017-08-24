@@ -7,10 +7,10 @@ module Pingdom
 
     attr_accessor :username, :password, :key, :conn
 
-    def initialize
-      @username= ENV['PINGDOM_USERNAME']
-      @password= ENV['PINGDOM_PASSWORD']
-      @key= ENV['PINGDOM_KEY']
+    def initialize u: nil , p: nil, k: nil
+      @username= u || ENV['PINGDOM_USERNAME']
+      @password= p || ENV['PINGDOM_PASSWORD']
+      @key= k || ENV['PINGDOM_KEY']
       @conn = Faraday.new(url: 'https://api.pingdom.com' )
       @conn.basic_auth(username, password)
     end
