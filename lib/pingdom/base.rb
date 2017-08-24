@@ -78,6 +78,13 @@ module Pingdom
       additional_field[key]=value
     end
 
+    def get key
+      begin
+        self.send key
+      rescue
+        additional_field[key]
+      end
+    end
 
   end
 end

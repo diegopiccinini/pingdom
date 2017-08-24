@@ -55,6 +55,7 @@ describe Pingdom::Check do
 
       it { expect(check).to be_a Pingdom::Check }
       it { expect(check.id).to be == id }
+      it { expect(check.name).to match check.get('name') }
 
     end
 
