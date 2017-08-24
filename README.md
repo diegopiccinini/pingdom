@@ -1,8 +1,24 @@
 # Pingdom
+This library has 2 ways to setup the client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pingdom`. To experiment with that code, run `bin/console` for an interactive prompt.
+- Using a dotenv file `.env` file
 
-TODO: Delete this and the text above, and describe your gem
+```bash
+#.env
+PINGDOM_USERNAME=your pingodom email here
+PINGDOM_PASSWORD=your pingdom password here
+PINGDOM_KEY=your pingdom key here
+#PINGDOM_VERSION= optional you cuould change the api/{version} here
+
+```
+
+- Or udate the client like:
+
+```ruby
+
+  Pingdom::Check.update_client username: 'your pingdom@email here', password: 'your pingdom password here' , key: 'your pingdom key here'
+
+```
 
 ## Installation
 
@@ -22,7 +38,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To get all checks
+
+```ruby
+checks = Pingdom::Check.all
+checks.each do |check|
+  puts check.name
+  puts check.id
+ end
+```
+
+To get one check using find, you need the id
+
+```ruby
+check = Pingom::Check.find 85975
+# return a check or raise an error if the chech is not found
+```
+
 
 ## Development
 
