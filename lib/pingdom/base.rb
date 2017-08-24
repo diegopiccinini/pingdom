@@ -19,6 +19,7 @@ module Pingdom
 
       def find id
         parse client.get( path: "#{path}/#{id}" )
+        raise "#{id} not found" if status!=200
         self.new body[path[1..-2]]
       end
 

@@ -44,16 +44,31 @@ describe Pingdom::Check do
 
   describe 'find' do
 
-    let(:id) do
-      Pingdom::Check.params = { limit: 1 }
-      all.first.id
+    context 'Given a valid id' do
+
+      let(:id) do
+        Pingdom::Check.params = { limit: 1 }
+        all.first.id
+      end
+
+      let(:check) { Pingdom::Check.find id }
+
+      it { expect(check).to be_a Pingdom::Check }
+      it { expect(check.id).to be == id }
+
     end
 
-    let(:check) { Pingdom::Check.find id }
+    context 'Given a bad id' do
 
-    it { expect(check).to be_a Pingdom::Check }
-    it { expect(check.id).to be == id }
+      let(:id) { 11 }
 
+      let(:check) { Pingdom::Check.find id }
+
+      it "raise an error " do
+        expect { check }.to raise_error "#{id} not found"
+      end
+
+    end
   end
 
 end
