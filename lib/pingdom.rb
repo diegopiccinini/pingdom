@@ -1,6 +1,8 @@
+require "dotenv/load"
 require "pingdom/version"
 require "pingdom/client"
-require "dotenv/load"
+require "pingdom/base"
+require 'pingdom/check'
 
 module Pingdom
   # Your code goes here...

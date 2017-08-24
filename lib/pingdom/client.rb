@@ -1,5 +1,4 @@
 require 'faraday'
-require 'pingdom/check'
 
 module Pingdom
 
@@ -18,8 +17,6 @@ module Pingdom
     def has_connection?
       get( params: { limit: 1 }, path: '/checks').status == 200
     end
-
-    private
 
     def get( params: {} , path: '' )
 
