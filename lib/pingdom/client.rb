@@ -16,12 +16,7 @@ module Pingdom
     end
 
     def has_connection?
-      checks( params: { limit: 1 } )
-      !Check.error?
-    end
-
-    def checks params: {}
-      Check.parse get params: params, path: '/checks'
+      get( params: { limit: 1 }, path: '/checks').status == 200
     end
 
     private

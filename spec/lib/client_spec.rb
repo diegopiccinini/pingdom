@@ -12,7 +12,7 @@ describe Pingdom::Client do
       expect(subject.password).to match ENV['PINGDOM_PASSWORD']
     end
 
-    it "has a username" do
+    it "has a key" do
       expect(subject.key).to match ENV['PINGDOM_KEY']
     end
 
@@ -20,9 +20,18 @@ describe Pingdom::Client do
 
   describe "#has_connection?" do
 
-    it { expect(subject.has_connection?).to be true }
+    context "with right settings" do
+      # to pass set the .env file
+      it { expect(subject.has_connection?).to be true }
+    end
+
+    context "with wrong settings" do
+
+      subject { Pingdom::Client.new u: 'bad', p: 'bad', k: 'bad' }
+
+      it { expect(subject.has_connection?).to be false }
+    end
 
   end
 
 end
-
