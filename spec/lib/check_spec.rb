@@ -6,8 +6,8 @@ describe Pingdom::Check do
 
   describe 'all' do
 
-    let(:total) { Pingdom::Check.body['counts']['total'] }
-    let(:limited) { Pingdom::Check.body['counts']['limited'] }
+    let(:total) { Pingdom::Check.total }
+    let(:limited) { Pingdom::Check.limited }
     let(:collection) { Pingdom::Check.collection }
 
     context 'without limit' do
@@ -73,6 +73,4 @@ describe Pingdom::Check do
   end
 
 end
-
-
 

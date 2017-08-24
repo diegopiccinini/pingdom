@@ -20,10 +20,14 @@ module Pingdom
       def find id
         parse client.get( path: "#{path}/#{id}" )
         raise "#{id} not found" if status!=200
-        self.new body[path[1..-2]]
+        self.new body[collection_type]
       end
 
       def path
+      end
+
+      def collection_type
+        path[1..-2]
       end
 
       def parse response
@@ -59,6 +63,13 @@ module Pingdom
         body[path[1..-1]]
       end
 
+      def total
+        body['counts']['total']
+      end
+
+      def limited
+        body['counts']['limited']
+      end
     end
 
     attr_accessor :additional_field
