@@ -2,9 +2,13 @@ require 'spec_helper'
 
 describe Pingdom::Check do
 
+  let(:all) { Pingdom::Check.all }
+
   describe 'all' do
-      let(:total) { Pingdom::Check.body['counts']['total'] }
-      let(:limited) { Pingdom::Check.body['counts']['limited'] }
+
+    let(:total) { Pingdom::Check.body['counts']['total'] }
+    let(:limited) { Pingdom::Check.body['counts']['limited'] }
+    let(:collection) { Pingdom::Check.collection }
 
     context 'without limit' do
 
@@ -14,6 +18,8 @@ describe Pingdom::Check do
 
       it { expect(Pingdom::Check.params).to be == {} }
       it { expect(limited).to be total}
+      it { expect(collection.count).to be total}
+      it { expect(all.first).to be_a Pingdom::Check }
 
     end
 
@@ -22,15 +28,34 @@ describe Pingdom::Check do
 
       before do
         Pingdom::Check.params = { limit: 1 }
-        Pingdom::Check.all
+        all
       end
+
 
       it { expect(Pingdom::Check.params).to be == { limit: 1} }
       it { expect(limited).to be == 1 }
+      it { expect(collection.count).to be 1 }
+      it { expect(all.first).to be_a Pingdom::Check }
 
     end
 
   end
+
+
+  describe 'find' do
+
+    let(:id) do
+      Pingdom::Check.params = { limit: 1 }
+      all.first.id
+    end
+
+    let(:check) { Pingdom::Check.find id }
+
+    it { expect(check).to be_a Pingdom::Check }
+    it { expect(check.id).to be == id }
+
+  end
+
 end
 
 

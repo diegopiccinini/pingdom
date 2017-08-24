@@ -12,6 +12,14 @@ module Pingdom
 
       def all
         parse client.get( params: params , path: path )
+        collection.map do |data|
+          self.new data
+        end
+      end
+
+      def find id
+        parse client.get( path: "#{path}/#{id}" )
+        self.new body[path[1..-2]]
       end
 
       def path
@@ -46,7 +54,29 @@ module Pingdom
         @@params=value
       end
 
+      def collection
+        body[path[1..-1]]
+      end
+
     end
+
+    attr_accessor :additional_field
+
+    def initialize data
+      @additional_field={}
+      data.each_pair do |k,v|
+        begin
+          self.send("#{k}=",v)
+        rescue
+          self.add k, v
+        end
+      end
+    end
+
+    def add key, value
+      additional_field[key]=value
+    end
+
 
   end
 end

@@ -12,5 +12,14 @@ module Pingdom
 
     end
 
+    attr_accessor :id, :created, :name, :hostname, :use_legacy_notifications,
+      :resolution, :type, :ipv6, :lasterrortime, :lasttesttime, :lastresponsetime,
+      :status, :alert_policy, :alert_policy_name, :acktimeout, :autoresolve, :tags
+=begin
+      :sendtoemail, :sendtosms, :sendtoiphone, :sendtotwitter, :sendnotificationwhendown,
+      :sendtoandroid, :notifyagainevery,:notifywhenbackup, :created, :contactids, :integrationids,
+     :probe_filters
+=end
+
   end
 end
