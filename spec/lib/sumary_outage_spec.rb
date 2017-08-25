@@ -8,7 +8,7 @@ describe Pingdom::SumaryOutage do
     Pingdom::Check.all.first.id
   end
 
-  let(:yesterday) { 1.days.ago }
+  let(:yesterday) { 1.days.ago.change(:usec => 0)}
 
   describe 'find' do
 
@@ -28,8 +28,8 @@ describe Pingdom::SumaryOutage do
 
       it "has valid times" do
         outage.states.each do |state|
-          expect(state['timefrom']).to be >= yesterday.to_i
-          expect(state['timeto']).to be > yesterday.to_i
+          expect(state.timefrom).to be >= yesterday
+          expect(state.timeto).to be > yesterday
         end
       end
 
@@ -41,8 +41,8 @@ describe Pingdom::SumaryOutage do
 
       it "has valid times" do
         outage.states.each do |state|
-          expect(state['timefrom']).to be < yesterday.to_i
-          expect(state['timeto']).to be <= yesterday.to_i
+          expect(state.timefrom).to be < yesterday
+          expect(state.timeto).to be <= yesterday
         end
       end
 
@@ -55,11 +55,11 @@ describe Pingdom::SumaryOutage do
       let(:last_state) { outage.states.last }
 
       it "has valid timefrom order" do
-        expect(first_state['timefrom']).to be < last_state['timefrom']
+        expect(first_state.timefrom).to be < last_state.timefrom
       end
 
       it "has valid timeto order" do
-        expect(first_state['timeto']).to be < last_state['timeto']
+        expect(first_state.timeto).to be < last_state.timeto
       end
 
     end
@@ -71,11 +71,11 @@ describe Pingdom::SumaryOutage do
       let(:last_state) { outage.states.last }
 
       it "has valid timefrom order" do
-        expect(first_state['timefrom']).to be > last_state['timefrom']
+        expect(first_state.timefrom).to be > last_state.timefrom
       end
 
       it "has valid timeto order" do
-        expect(first_state['timeto']).to be > last_state['timeto']
+        expect(first_state.timeto).to be > last_state.timeto
       end
 
     end
