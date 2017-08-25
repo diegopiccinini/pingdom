@@ -37,7 +37,6 @@ describe Pingdom::Check do
         all
       end
 
-
       it { expect(Pingdom::Check.params).to be == { limit: 1} }
       it { expect(limited).to be == 1 }
       it { expect(collection.count).to be 1 }
