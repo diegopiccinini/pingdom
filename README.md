@@ -81,7 +81,10 @@ summary_outage.downs
 # get up and down times with min_interval to filter (in seconds)
 summary_outage.ups min_interval: 300 # more than 5 minuts
 => 10
+
 summary_outage.downs min_interval: 180 # more than 3 minutes
+=> 2
+
 ```
 
 ## Development
