@@ -27,9 +27,9 @@ describe Pingdom::SumaryOutage do
       let(:outage) { Pingdom::SumaryOutage.find id, from: yesterday }
 
       it "has valid times" do
-        outage.states.each do |status|
-          expect(status['timefrom']).to be >= yesterday
-          expect(status['timeto']).to be > yesterday
+        outage.states.each do |state|
+          expect(state['timefrom']).to be >= yesterday
+          expect(state['timeto']).to be > yesterday
         end
       end
 
@@ -37,16 +37,49 @@ describe Pingdom::SumaryOutage do
 
     context "whith param to" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id, from: 2.days.ago.to_i, to: yesterday }
+      let(:outage) { Pingdom::SumaryOutage.find id, to: yesterday }
 
       it "has valid times" do
-        outage.states.each do |status|
-          expect(status['timefrom']).to be < yesterday
-          expect(status['timeto']).to be <= yesterday
+        outage.states.each do |state|
+          expect(state['timefrom']).to be < yesterday
+          expect(state['timeto']).to be <= yesterday
         end
       end
 
     end
+
+    context "whith param order asc" do
+
+      let(:outage) { Pingdom::SumaryOutage.find id, order: 'asc' }
+      let(:first_state) { outage.states.first }
+      let(:last_state) { outage.states.last }
+
+      it "has valid timefrom order" do
+        expect(first_state['timefrom']).to be < last_state['timefrom']
+      end
+
+      it "has valid timeto order" do
+        expect(first_state['timeto']).to be < last_state['timeto']
+      end
+
+    end
+
+    context "whith param order desc" do
+
+      let(:outage) { Pingdom::SumaryOutage.find id, order: 'desc' }
+      let(:first_state) { outage.states.first }
+      let(:last_state) { outage.states.last }
+
+      it "has valid timefrom order" do
+        expect(first_state['timefrom']).to be > last_state['timefrom']
+      end
+
+      it "has valid timeto order" do
+        expect(first_state['timeto']).to be > last_state['timeto']
+      end
+
+    end
+
   end
 end
 
