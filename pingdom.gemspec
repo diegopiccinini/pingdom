@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "byebug", "~> 9.1"
   spec.add_dependency "dotenv", "~> 2.2"
   spec.add_dependency "faraday", "~> 0.13"
+  spec.add_dependency "activesupport", "~> 5.1"
 end

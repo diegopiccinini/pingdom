@@ -17,8 +17,11 @@ module Pingdom
         end
       end
 
-      def find id
-        parse client.get( path: "#{path}/#{id}" )
+      def find id, from: nil, to: nil
+        @@params[:from]= from if from
+        @@params[:to]= from if to
+        parse client.get( path: "#{path}/#{id}" , params: params)
+        @@params={}
         raise "#{id} not found" if status!=200
         self.new body[collection_type]
       end
