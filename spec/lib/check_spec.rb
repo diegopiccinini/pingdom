@@ -3,6 +3,12 @@ require 'spec_helper'
 describe Pingdom::Check do
 
   let(:all) { Pingdom::Check.all }
+  let(:id) do
+    Pingdom::Check.params = { limit: 1 }
+    all.first.id
+  end
+
+  subject { Pingdom::Check.find id }
 
   describe 'all' do
 
@@ -46,16 +52,10 @@ describe Pingdom::Check do
 
     context 'Given a valid id' do
 
-      let(:id) do
-        Pingdom::Check.params = { limit: 1 }
-        all.first.id
-      end
-
-      let(:check) { Pingdom::Check.find id }
-
-      it { expect(check).to be_a Pingdom::Check }
-      it { expect(check.id).to be == id }
-      it { expect(check.name).to match check.get('name') }
+      it { expect(subject).to be_a Pingdom::Check }
+      it { expect(subject.id).to be == id }
+      it { expect(subject.name).to match subject.get('name') }
+      it { expect(subject.created).to be_a Time }
 
     end
 
@@ -63,13 +63,21 @@ describe Pingdom::Check do
 
       let(:id) { 11 }
 
-      let(:check) { Pingdom::Check.find id }
-
       it "raise an error " do
-        expect { check }.to raise_error "#{id} not found"
+        expect { subject }.to raise_error "#{id} not found"
       end
 
     end
+  end
+
+  describe '#time_attributes' do
+    it { expect(subject.send :time_attributes).to include 'created' }
+    it { expect(subject.send :time_attributes).to_not include 'id' }
+  end
+
+  describe '#is_time_attribute?' do
+    it { expect(subject.send('is_time_attribute?','created') ).to be_truthy }
+    it { expect(subject.send('is_time_attribute?','id') ).to be_falsey }
   end
 
 end

@@ -77,24 +77,37 @@ module Pingdom
     def initialize data
       @additional_field={}
       data.each_pair do |k,v|
-        begin
-          self.send("#{k}=",v)
-        rescue
-          self.add k, v
+        v=Time.at(v) if is_time_attribute?(k)
+
+        method="#{k}=".to_sym
+        if self.methods.include?(method)
+          self.send(method,v)
+        else
+          self.add(k, v)
         end
       end
     end
 
     def add key, value
-      additional_field[key]=value
+      additional_field[key.to_sym]=value
     end
 
     def get key
-      begin
+      key=key.to_sym
+      if self.methods.include?(key)
         self.send key
-      rescue
+      else
         additional_field[key]
       end
+    end
+
+    private
+    def time_attributes
+      []
+    end
+
+    def is_time_attribute? key
+      time_attributes.include?(key)
     end
 
   end

@@ -1,5 +1,7 @@
 # Pingdom
-This library has 2 ways to setup the client
+This a free software library to get data from api.pingdom.com, is a Diego Piccinini and BookingBug contribution to the free software and open source community.
+
+It is not oficial. It has 2 ways to setup the client
 
 - Using a dotenv file `.env` file
 
