@@ -21,8 +21,8 @@ module Pingdom
 
         @@params={}
 
-        @@params[:from]= from if from
-        @@params[:to]= to if to
+        @@params[:from]= from.to_i if from
+        @@params[:to]= to.to_i if to
         @@params[:order]= order if order
 
         parse client.get( path: "#{path}/#{id}" , params: params)

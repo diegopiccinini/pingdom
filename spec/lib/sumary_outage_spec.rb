@@ -8,7 +8,7 @@ describe Pingdom::SumaryOutage do
     Pingdom::Check.all.first.id
   end
 
-  let(:yesterday) { 1.days.ago.to_i }
+  let(:yesterday) { 1.days.ago }
 
   describe 'find' do
 
@@ -28,8 +28,8 @@ describe Pingdom::SumaryOutage do
 
       it "has valid times" do
         outage.states.each do |state|
-          expect(state['timefrom']).to be >= yesterday
-          expect(state['timeto']).to be > yesterday
+          expect(state['timefrom']).to be >= yesterday.to_i
+          expect(state['timeto']).to be > yesterday.to_i
         end
       end
 
@@ -41,8 +41,8 @@ describe Pingdom::SumaryOutage do
 
       it "has valid times" do
         outage.states.each do |state|
-          expect(state['timefrom']).to be < yesterday
-          expect(state['timeto']).to be <= yesterday
+          expect(state['timefrom']).to be < yesterday.to_i
+          expect(state['timeto']).to be <= yesterday.to_i
         end
       end
 
