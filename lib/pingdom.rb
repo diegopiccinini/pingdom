@@ -4,6 +4,7 @@ require "pingdom/client"
 require "pingdom/base"
 require 'pingdom/check'
 require 'pingdom/summary_outage'
+require 'pingdom/summary_performance'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/time/acts_like'
 require 'active_support/core_ext/time/calculations'

@@ -17,13 +17,15 @@ module Pingdom
         end
       end
 
-      def find id, from: nil, to: nil, order: nil
+      def find id, from: nil, to: nil, order: nil, resolution: nil, includeuptime: nil
 
         @@params={}
 
         @@params[:from]= from.to_i if from
         @@params[:to]= to.to_i if to
-        @@params[:order]= order if order
+        @@params[:order]= order if order and %q(ask desc).include?(order)
+        @@params[:resolution]= resolution if resolution and %q(hour day week).include?(resolution)
+        @@params[:includeuptime]= includeuptime if includeuptime and %q(true false).include?(includeuptime)
 
         parse client.get( path: "#{path}/#{id}" , params: params)
 
