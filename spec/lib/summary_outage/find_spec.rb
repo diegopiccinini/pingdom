@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Pingdom::SumaryOutage do
+describe Pingdom::SummaryOutage do
 
 
   let(:id) do
@@ -16,7 +16,7 @@ describe Pingdom::SumaryOutage do
 
     context "whithout params" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id }
+      let(:outage) { Pingdom::SummaryOutage.find id }
 
       it { expect(states).to be_a Array }
 
@@ -24,7 +24,7 @@ describe Pingdom::SumaryOutage do
 
     context "whith param from" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id, from: yesterday }
+      let(:outage) { Pingdom::SummaryOutage.find id, from: yesterday }
 
       it "has valid times" do
         outage.states.each do |state|
@@ -37,7 +37,7 @@ describe Pingdom::SumaryOutage do
 
     context "whith param to" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id, to: yesterday }
+      let(:outage) { Pingdom::SummaryOutage.find id, to: yesterday }
 
       it "has valid times" do
         outage.states.each do |state|
@@ -50,7 +50,7 @@ describe Pingdom::SumaryOutage do
 
     context "whith param order asc" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id, order: 'asc' }
+      let(:outage) { Pingdom::SummaryOutage.find id, order: 'asc' }
       let(:first_state) { outage.states.first }
       let(:last_state) { outage.states.last }
 
@@ -66,7 +66,7 @@ describe Pingdom::SumaryOutage do
 
     context "whith param order desc" do
 
-      let(:outage) { Pingdom::SumaryOutage.find id, order: 'desc' }
+      let(:outage) { Pingdom::SummaryOutage.find id, order: 'desc' }
       let(:first_state) { outage.states.first }
       let(:last_state) { outage.states.last }
 
@@ -81,5 +81,6 @@ describe Pingdom::SumaryOutage do
     end
 
   end
+
 end
 

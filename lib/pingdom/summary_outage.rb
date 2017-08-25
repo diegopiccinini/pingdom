@@ -2,7 +2,7 @@ require 'json'
 
 module Pingdom
 
-  class SumaryOutage < Pingdom::Base
+  class SummaryOutage < Pingdom::Base
 
     class << self
 
@@ -26,6 +26,15 @@ module Pingdom
         Struct::State.new( v['status'], Time.at(v['timefrom']), Time.at(v['timeto']))
       end
 
+    end
+
+
+    def ups
+      states.count { |s| s.status == 'up' }
+    end
+
+    def downs
+      states.count { |s| s.status == 'down' }
     end
 
   end
