@@ -40,6 +40,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Checks
+
 To get all checks
 
 ```ruby
@@ -57,6 +59,30 @@ check = Pingom::Check.find 85975
 # return a check or raise an error if the chech is not found
 ```
 
+### Summary Outages
+
+Get the Summary Outage by check id:
+
+```ruby
+
+summary_outage = Pingdom::SummaryOutage.find check_id
+
+# With params from, to and order are not mandatory params
+
+summary_outage = Pingdom::SummaryOutage.find check_id , from: 2.days.ago, to: 1.days.ago, order: 'ask'
+
+# get up and down times
+summary_outage.ups
+=> 120
+
+summary_outage.downs
+=> 4
+
+# get up and down times with min_interval to filter (in seconds)
+summary_outage.ups min_interval: 300 # more than 5 minuts
+=> 10
+summary_outage.downs min_interval: 180 # more than 3 minutes
+```
 
 ## Development
 
