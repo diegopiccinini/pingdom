@@ -75,13 +75,27 @@ describe Pingdom::SummaryOutage do
 
   let(:without_states) { Pingdom::SummaryOutage.new({ 'states' => [] }) }
 
+
   describe "#ups" do
+
+  let(:up_more_than_1000) do
+    data['states'].count do |s|
+      s['status']=='up' and (s['timeto'] - s['timefrom']) > 1000
+    end
+  end
     it { expect(subject.ups).to be == 8 }
+    it { expect(subject.ups min_interval: 1000 ).to be == up_more_than_1000 }
     it { expect(without_states.ups).to be == 0 }
   end
 
   describe "#downs" do
+  let(:down_more_than_300) do
+    data['states'].count do |s|
+      s['status']=='down' and (s['timeto'] - s['timefrom']) > 300
+    end
+  end
     it { expect(subject.downs).to be == 7 }
+    it { expect(subject.downs min_interval: 300 ).to be == down_more_than_300 }
     it { expect(without_states.downs).to be == 0 }
   end
 

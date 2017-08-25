@@ -2,6 +2,12 @@ require 'json'
 
 module Pingdom
 
+  Struct.new('State',:status, :timefrom, :timeto) do
+    def interval
+      timeto.to_i - timefrom.to_i
+    end
+  end
+
   class SummaryOutage < Pingdom::Base
 
     class << self
@@ -20,8 +26,6 @@ module Pingdom
 
     def states= values
 
-      Struct.new('State',:status, :timefrom, :timeto)
-
       @states=values.map do |v|
         Struct::State.new( v['status'], Time.at(v['timefrom']), Time.at(v['timeto']))
       end
@@ -29,12 +33,12 @@ module Pingdom
     end
 
 
-    def ups
-      states.count { |s| s.status == 'up' }
+    def ups min_interval: 0
+      states.count { |s| s.status == 'up' and s.interval > min_interval }
     end
 
-    def downs
-      states.count { |s| s.status == 'down' }
+    def downs min_interval: 0
+      states.count { |s| s.status == 'down' and s.interval > min_interval }
     end
 
   end
