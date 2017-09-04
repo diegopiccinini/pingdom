@@ -8,68 +8,86 @@ describe Pingdom::SummaryPerformance do
     Pingdom::Check.all.first.id
   end
 
-  let(:last_month) { 30.days.ago.change( hour: 0) }
 
-  describe 'find' do
+  ['hour','day','week'].each do |resolution|
 
-    let(:weeks) { performance.weeks }
+    context "#{resolution} resolution" do
 
-    context "whithout params" do
+      let(:resolution_method) { "#{resolution}s".to_sym }
 
-      let(:performance) { Pingdom::SummaryPerformance.find id, resolution: 'week', includeuptime: 'true' }
+      let(:a_period_ago) do
+        if resolution== 'week'
+          7.days.ago.change( hour: 0)
+        else
+          1.days.ago.change( hour: 0)
+        end
+      end
 
-      it { expect(weeks).to be_a Array }
+      describe 'find' do
 
-    end
+        let(:resolution_response) { performance.send(resolution_method) }
 
-    context "whith param from" do
+        context "whithout params" do
 
-      let(:performance) { Pingdom::SummaryPerformance.find id, from: last_month, resolution: 'week', includeuptime: 'true' }
+          let(:performance) { Pingdom::SummaryPerformance.find id, resolution: resolution, includeuptime: 'true' }
 
-      it "has valid times" do
-        performance.weeks.each do |week|
-          expect(week.starttime + 1.week).to be >= last_month
+          it { expect(resolution_response).to be_a Array }
+
+        end
+
+        context "whith param from" do
+
+          let(:performance) { Pingdom::SummaryPerformance.find id, from: a_period_ago, resolution: resolution, includeuptime: 'true' }
+
+          it "has valid times" do
+            resolution_response.each do |resolution_struct|
+              expect(resolution_struct.starttime + 1.send(resolution)).to be >= a_period_ago
+            end
+          end
+
+        end
+
+        context "whith param to" do
+
+          let(:performance) { Pingdom::SummaryPerformance.find id, to: a_period_ago, resolution: resolution, includeuptime: 'true' }
+
+          it "has valid times" do
+            resolution_response.each do |resolution_struct|
+              expect(resolution_struct.starttime).to be <= a_period_ago
+            end
+          end
+
+        end
+
+        context 'with order' do
+
+          let(:first_resolution) { performance.send(resolution_method).first }
+          let(:last_resolution) { performance.send(resolution_method).last }
+
+          context "whith param order asc" do
+
+            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'asc' , resolution: resolution, includeuptime: 'true'}
+
+            it "has valid timefrom order" do
+              expect(first_resolution.starttime).to be < last_resolution.starttime
+            end
+
+          end
+
+          context "whith param order desc" do
+
+            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'desc' , resolution: resolution, includeuptime: 'true'}
+
+            it "has valid timefrom order" do
+              expect(first_resolution.starttime).to be > last_resolution.starttime
+            end
+
+          end
+
         end
       end
 
     end
-
-    context "whith param to" do
-
-      let(:performance) { Pingdom::SummaryPerformance.find id, to: last_month, resolution: 'week', includeuptime: 'true' }
-
-      it "has valid times" do
-        performance.weeks.each do |week|
-          expect(week.starttime).to be < last_month
-        end
-      end
-
-    end
-
-    context "whith param order asc" do
-
-      let(:performance) { Pingdom::SummaryPerformance.find id, order: 'asc' , resolution: 'week', includeuptime: 'true'}
-      let(:first_week) { performance.weeks.first }
-      let(:last_week) { performance.weeks.last }
-
-      it "has valid timefrom order" do
-        expect(first_week.starttime).to be < last_week.starttime
-      end
-
-    end
-
-    context "whith param order desc" do
-
-      let(:performance) { Pingdom::SummaryPerformance.find id, order: 'desc' , resolution: 'week', includeuptime: 'true'}
-      let(:first_week) { performance.weeks.first }
-      let(:last_week) { performance.weeks.last }
-
-      it "has valid timefrom order" do
-        expect(first_week.starttime).to be > last_week.starttime
-      end
-
-    end
-
   end
 
 end

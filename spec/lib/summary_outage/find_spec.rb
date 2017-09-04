@@ -55,11 +55,11 @@ describe Pingdom::SummaryOutage do
       let(:last_state) { outage.states.last }
 
       it "has valid timefrom order" do
-        expect(first_state.timefrom).to be < last_state.timefrom
+        expect(first_state.timefrom).to be <= last_state.timefrom
       end
 
       it "has valid timeto order" do
-        expect(first_state.timeto).to be < last_state.timeto
+        expect(first_state.timeto).to be <= last_state.timeto
       end
 
     end
@@ -71,11 +71,11 @@ describe Pingdom::SummaryOutage do
       let(:last_state) { outage.states.last }
 
       it "has valid timefrom order" do
-        expect(first_state.timefrom).to be > last_state.timefrom
+        expect(first_state.timefrom).to be >= last_state.timefrom
       end
 
       it "has valid timeto order" do
-        expect(first_state.timeto).to be > last_state.timeto
+        expect(first_state.timeto).to be >= last_state.timeto
       end
 
     end
