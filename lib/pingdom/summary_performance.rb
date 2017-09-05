@@ -1,5 +1,3 @@
-require 'json'
-
 module Pingdom
 
   Struct.new('Week',:starttime, :avgresponse, :uptime, :downtime, :unmonitored)

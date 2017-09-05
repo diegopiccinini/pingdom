@@ -1,5 +1,3 @@
-require 'json'
-
 module Pingdom
 
   class Check < Pingdom::Base

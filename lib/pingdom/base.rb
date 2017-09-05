@@ -1,4 +1,7 @@
+require 'json'
+
 module Pingdom
+
   class Base
 
     @@client = Client.new

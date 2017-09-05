@@ -1,5 +1,3 @@
-require 'json'
-
 module Pingdom
 
   Struct.new('State',:status, :timefrom, :timeto) do
