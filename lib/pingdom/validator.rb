@@ -28,6 +28,7 @@ module Pingdom
     def format
       validate_all.each_pair.map do |key, value|
         value=value.to_i if permit[key]==:valid_time?
+        value=value.to_s if permit[key]==:valid_boolean?
         [key, value]
       end.to_h
     end
@@ -48,8 +49,8 @@ module Pingdom
       %q(hour day week).include? resolution
     end
 
-    def valid_boolean_str? boolstring
-      ['true','false'].include? boolstring
+    def valid_boolean? bool
+      bool.is_a?(TrueClass) || bool.is_a?(FalseClass)
     end
 
     def valid_int_list? int_list

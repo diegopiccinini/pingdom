@@ -6,7 +6,7 @@ describe Pingdom::Validator do
     { probes: '23,33,554,4',
       to: 5.days.ago ,
       from: 10.days.ago,
-      includeuptime: 'true',
+      includeuptime: true,
       order: 'asc',
       resolution: 'week'
     }
@@ -19,7 +19,7 @@ describe Pingdom::Validator do
       from: :valid_time?,
       resolution: :valid_resolution?,
       order: :valid_order?,
-      includeuptime: :valid_boolean_str?
+      includeuptime: :valid_boolean?
     }
   end
 
@@ -27,6 +27,7 @@ describe Pingdom::Validator do
     h=input
     h[:to]=h[:to].to_i
     h[:from]=h[:from].to_i
+    h[:includeuptime]=h[:includeuptime].to_s
     h
   end
 
@@ -59,11 +60,13 @@ describe Pingdom::Validator do
 
   end
 
-  describe '#valid_boolean_str?' do
+  describe '#valid_boolean?' do
 
-    it { expect(subject.send(:valid_boolean_str?,'true')).to be true }
-    it { expect(subject.send(:valid_boolean_str?,'false')).to be true }
-    it { expect(subject.send(:valid_boolean_str?,'bad')).to be false }
+    it { expect(subject.send(:valid_boolean?,true)).to be true }
+    it { expect(subject.send(:valid_boolean?,false)).to be true }
+    it { expect(subject.send(:valid_boolean?,'bad')).to be false }
+    it { expect(subject.send(:valid_boolean?,0)).to be false }
+    it { expect(subject.send(:valid_boolean?,1)).to be false }
 
   end
 

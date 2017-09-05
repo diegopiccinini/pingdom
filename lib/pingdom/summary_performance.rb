@@ -23,7 +23,7 @@ module Pingdom
           from: :valid_time?,
           resolution: :valid_resolution?,
           order: :valid_order?,
-          includeuptime: :valid_boolean_str?
+          includeuptime: :valid_boolean?
         }
       end
 

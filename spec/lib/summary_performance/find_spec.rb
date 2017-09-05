@@ -29,7 +29,7 @@ describe Pingdom::SummaryPerformance do
 
         context "whithout params" do
 
-          let(:performance) { Pingdom::SummaryPerformance.find id, resolution: resolution, includeuptime: 'true' }
+          let(:performance) { Pingdom::SummaryPerformance.find id, resolution: resolution, includeuptime: true }
 
           it { expect(resolution_response).to be_a Array }
 
@@ -37,7 +37,7 @@ describe Pingdom::SummaryPerformance do
 
         context "whith param from" do
 
-          let(:performance) { Pingdom::SummaryPerformance.find id, from: a_period_ago, resolution: resolution, includeuptime: 'true' }
+          let(:performance) { Pingdom::SummaryPerformance.find id, from: a_period_ago, resolution: resolution, includeuptime: true }
 
           it "has valid times" do
             resolution_response.each do |resolution_struct|
@@ -49,7 +49,7 @@ describe Pingdom::SummaryPerformance do
 
         context "whith param to" do
 
-          let(:performance) { Pingdom::SummaryPerformance.find id, to: a_period_ago, resolution: resolution, includeuptime: 'true' }
+          let(:performance) { Pingdom::SummaryPerformance.find id, to: a_period_ago, resolution: resolution, includeuptime: true }
 
           it "has valid times" do
             resolution_response.each do |resolution_struct|
@@ -66,7 +66,7 @@ describe Pingdom::SummaryPerformance do
 
           context "whith param order asc" do
 
-            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'asc' , resolution: resolution, includeuptime: 'true'}
+            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'asc' , resolution: resolution, includeuptime: true }
 
             it "has valid timefrom order" do
               expect(first_resolution.starttime).to be < last_resolution.starttime
@@ -76,7 +76,7 @@ describe Pingdom::SummaryPerformance do
 
           context "whith param order desc" do
 
-            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'desc' , resolution: resolution, includeuptime: 'true'}
+            let(:performance) { Pingdom::SummaryPerformance.find id, order: 'desc' , resolution: resolution, includeuptime: true }
 
             it "has valid timefrom order" do
               expect(first_resolution.starttime).to be > last_resolution.starttime
