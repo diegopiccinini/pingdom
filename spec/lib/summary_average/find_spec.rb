@@ -56,6 +56,7 @@ describe Pingdom::SummaryAverage do
       it { expect(first_probe.avgresponse).to be_a Integer }
       it { expect(first_probe.from).to be_a Time }
       it { expect(first_probe.to).to be_a Time }
+      it { expect(first_probe.id).to be_a Integer }
 
     end
   end
