@@ -15,7 +15,7 @@ module Pingdom
 
     def filter
       input.select do |k,v|
-        permit.keys.include?k
+        permit.keys.include?k and !v.nil?
       end
     end
 

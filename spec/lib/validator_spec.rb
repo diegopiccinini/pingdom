@@ -80,8 +80,8 @@ describe Pingdom::Validator do
 
   describe '#filter' do
 
-    let(:permit) { { probes: :valid_int_list? } }
-    let(:input)  { { probes: '2,44,33' , another_input: 1 } }
+    let(:permit) { { probes: :valid_int_list? , to: :valid_time? } }
+    let(:input)  { { probes: '2,44,33' , to:nil, another_input: 1 } }
     let(:input_filtered)  { { probes: '2,44,33' } }
 
     before do
