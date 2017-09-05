@@ -17,15 +17,15 @@ describe Pingdom::SummaryPerformance do
 
       let(:a_period_ago) do
         if resolution== 'week'
-          7.days.ago.change( hour: 0)
+          8.days.ago.change( hour: 0)
         else
           1.days.ago.change( hour: 0)
         end
       end
 
-      describe 'find' do
+      let(:resolution_response) { performance.send(resolution_method) }
 
-        let(:resolution_response) { performance.send(resolution_method) }
+      describe 'find' do
 
         context "whithout params" do
 

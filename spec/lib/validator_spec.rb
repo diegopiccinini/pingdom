@@ -3,9 +3,8 @@ require 'spec_helper'
 describe Pingdom::Validator do
 
   let(:input) do
-    {
-      probes: '23,33,554,4',
-      to: 5.days.ago,
+    { probes: '23,33,554,4',
+      to: 5.days.ago ,
       from: 10.days.ago,
       includeuptime: 'true',
       order: 'asc',
@@ -24,12 +23,12 @@ describe Pingdom::Validator do
     }
   end
 
-    let(:formated_data) do
-      h=input
-      h[:to] = input[:to].to_i
-      h[:from] = input[:from].to_i
-      h
-    end
+  let(:formated_data) do
+    h=input
+    h[:to]=h[:to].to_i
+    h[:from]=h[:from].to_i
+    h
+  end
 
   describe '#valid_time?' do
 
@@ -78,18 +77,36 @@ describe Pingdom::Validator do
 
   end
 
+  describe '#valid_str_list?' do
+
+    it { expect(subject.send(:valid_str_list?, 'nginx')).to be true }
+    it { expect(subject.send(:valid_str_list?, 'nginx,apache')).to be true }
+    it { expect(subject.send(:valid_str_list?, '1,apache')).to be true }
+    it { expect(subject.send(:valid_str_list?, '1 bad')).to be false }
+    it { expect(subject.send(:valid_str_list?, '')).to be false }
+    it { expect(subject.send(:valid_str_list?, ' ')).to be false }
+
+  end
+
+  describe '#valid_positive_int?' do
+    it { expect(subject.send(:valid_positive_int?, '3')).to be false }
+    it { expect(subject.send(:valid_positive_int?, 3)).to be true }
+    it { expect(subject.send(:valid_positive_int?, 0)).to be true }
+    it { expect(subject.send(:valid_positive_int?, -1)).to be false }
+  end
+
   describe '#filter' do
 
     let(:permit) { { probes: :valid_int_list? , to: :valid_time? } }
-    let(:input)  { { probes: '2,44,33' , to:nil, another_input: 1 } }
-    let(:input_filtered)  { { probes: '2,44,33' } }
+    let(:input)  { { probes: '2,44,33' , to: nil, another_input: 1 } }
+    let(:out) { { probes: '2,44,33' } }
 
     before do
       allow(subject).to receive(:permit) { permit }
       allow(subject).to receive(:input) { input }
     end
 
-    it { expect(subject.send(:filter)).to eql input_filtered }
+    it { expect(subject.send(:filter)).to eql out }
 
   end
 
@@ -99,7 +116,7 @@ describe Pingdom::Validator do
 
     before do
       allow(subject).to receive(:permit) { permit }
-      allow(subject).to receive(:filter) { input }
+      allow(subject).to receive(:input) { input }
     end
 
     context 'valid with all fields' do
@@ -118,7 +135,7 @@ describe Pingdom::Validator do
 
     context 'invalid data' do
 
-      let(:input) { { probes: 'badintlist' }}
+      let(:input) { { probes: 'badintlist' } }
 
       it do
         expect { validate_all }.to raise_error("'probes' param with value: 'badintlist', cannot pass the 'valid_int_list?' validation")
@@ -139,8 +156,9 @@ describe Pingdom::Validator do
   end
 
   describe '#validate' do
-    it { expect(subject.validate input: input, permit: permit, params: {}).to eql formated_data }
-    it { expect(subject.validate input: input, permit: permit, params: { a: :a}).to eql formated_data.merge({ a: :a }) }
+    let(:args) { [input] }
+    it { expect(subject.validate input: args, permit: permit, params: {}).to eql formated_data }
+    it { expect(subject.validate input: args, permit: permit, params: { a: :a}).to eql formated_data.merge({ a: :a }) }
   end
 
 end

@@ -4,7 +4,7 @@ module Pingdom
     attr :input, :permit, :params
 
     def validate input: , permit: , params:
-      @input=input
+      @input= input.first || {}
       @permit=permit
       @params=params
 
@@ -36,6 +36,10 @@ module Pingdom
       time.is_a? Time
     end
 
+    def valid_positive_int? value
+      value.is_a? Integer and value>=0
+    end
+
     def valid_order? order
       ['asc','desc'].include? order
     end
@@ -56,6 +60,16 @@ module Pingdom
       list.each do |i|
         raise "Not valid Integer" if Integer(i)!=i.to_i
       end
+
+      true
+    rescue
+      false
+    end
+
+    def valid_str_list? str_list
+
+      list=str_list.split(',')
+      raise 'Not valid list' if list.empty? || str_list.count(' ')>0
 
       true
     rescue

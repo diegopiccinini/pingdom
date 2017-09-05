@@ -20,6 +20,14 @@ module Pingdom
         'summary'
       end
 
+      def permit
+        {
+          from: :valid_time?,
+          to: :valid_time?,
+          order: :valid_order?
+        }
+      end
+
     end
 
     attr_accessor :states

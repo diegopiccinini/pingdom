@@ -17,15 +17,10 @@ module Pingdom
         end
       end
 
-      def find id, from: nil, to: nil, order: nil, resolution: nil, includeuptime: nil
+      def find id, *args
+        validator=Pingdom::Validator.new
 
-        @@params={}
-
-        @@params[:from]= from.to_i if from
-        @@params[:to]= to.to_i if to
-        @@params[:order]= order if order and %q(ask desc).include?(order)
-        @@params[:resolution]= resolution if resolution and %q(hour day week).include?(resolution)
-        @@params[:includeuptime]= includeuptime if includeuptime and %q(true false).include?(includeuptime)
+        @@params=validator.validate input: args, permit: permit, params: params
 
         parse client.get( path: "#{path}/#{id}" , params: params)
 
@@ -36,6 +31,10 @@ module Pingdom
       end
 
       def path
+      end
+
+      def permit
+        {}
       end
 
       def collection_type
@@ -82,6 +81,7 @@ module Pingdom
       def limited
         body['counts']['limited']
       end
+
     end
 
     attr_accessor :additional_field
@@ -121,6 +121,5 @@ module Pingdom
     def is_time_attribute? key
       time_attributes.include?(key)
     end
-
   end
 end
