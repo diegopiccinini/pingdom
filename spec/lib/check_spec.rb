@@ -67,6 +67,14 @@ describe Pingdom::Check do
       end
 
     end
+
+    context 'Include tags' do
+
+      let(:check) { Pingdom::Check.find id, include_tags: true }
+
+      it { expect(check.tags).to be_a Array }
+
+    end
   end
 
   describe '#time_attributes' do

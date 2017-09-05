@@ -55,8 +55,74 @@ checks.each do |check|
 To get one check using find, you need the id
 
 ```ruby
-check = Pingom::Check.find 85975
+check = Pingdom::Check.find 85975
 # return a check or raise an error if the chech is not found
+
+# with tags
+check = Pingdom::Check.find 85975, include_tags: true
+```
+
+### Summary Average
+
+Get the Sumary Average by check id:
+
+```ruby
+average = Pingdom::SummaryAverage.find check_id
+
+avergage.from # is a Time
+=> 1970-01-01 01:00:00 +0100
+
+average.to # is a Time
+=> 2017-09-05 15:43:53 +0100
+
+average.avgresponse # is a Integer
+=> 381
+
+# with parameters
+
+average = Pingdom::SummaryAverage.find check_id, from: 10.days.ago , to: 1.day.ago, probes: '44,33'
+
+# includeuptime
+
+average = Pingdom::SummaryAverage.find check_id, includeuptime: true
+# get status data
+average.status.totalup
+average.status.totaldown
+average.status.totalunknown
+
+# bycountry
+
+average = Pingdom::SummaryAverage.find check_id, bycountry: true
+
+average.avgresponse # is an Array of Struct::AvgResponse
+r = average.avgresponse.firt
+r.country
+=> 'UK'
+
+r.avgresponse
+=> 92
+
+r.from # and r.to are Times
+=> 1970-01-01 01:00:00 +0100
+
+# byprobe
+
+average = Pingdom::SummaryAverage.find check_id, byprobe: true
+a=average.probe_responses # is array of Struct::ProbeResponse
+
+# Get data of each probe response
+r=a.first
+r.id # the id of the probe
+r.avgresponse
+r.n # integer
+r.from
+r.to
+
+average.from # Time of request filter
+=> 1970-01-01 01:00:00 +0100
+average.to # Time of request filter
+=> 2017-09-05 15:43:53 +0100
+
 ```
 
 ### Summary Outages
@@ -69,7 +135,7 @@ summary_outage = Pingdom::SummaryOutage.find check_id
 
 # With params from, to and order are not mandatory params
 
-summary_outage = Pingdom::SummaryOutage.find check_id , from: 2.days.ago, to: 1.days.ago, order: 'ask'
+summary_outage = Pingdom::SummaryOutage.find check_id , from: 2.days.ago, to: 1.days.ago, order: 'desc'
 
 # get up and down times
 summary_outage.ups
@@ -85,6 +151,44 @@ summary_outage.ups min_interval: 300 # more than 5 minuts
 summary_outage.downs min_interval: 180 # more than 3 minutes
 => 2
 
+```
+
+### Summary Performance
+
+Get the Summary Performance by check id:
+
+```ruby
+
+summary_performance= Pingodm::SummaryPerformance find check_id
+
+# available params from: Time , to: Time, resolution: 'hour' | 'day'| 'week' , includeuptime: true | false
+
+# When you find by a hour resolution you can get hours
+summary_performance.hours.each do |h|
+  puts h.starttime # Time
+  puts h.avgresponse # Integer
+  puts h.uptime # Integer
+  puts h.downtime # Integer
+  puts h.unmonitored # Integer
+end
+
+# the same behavior with 'week' and 'day' resolutions, you can get the data of each one use the same methods.
+
+summary_performance.weeks.is_a
+=> Array # of Struct::Week
+
+summary_performance.day.is_a
+=> Array # of Struct::Day
+
+```
+
+### ServerTime
+
+Easy way to get the servertime
+
+```ruby
+Pingdom::ServerTime.time
+=> 2017-09-05 17:47:56 +0100 #Time object of the servertime
 ```
 
 ## Development

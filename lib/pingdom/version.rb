@@ -1,3 +1,3 @@
 module Pingdom
-  VERSION = "0.1.4-pre"
+  VERSION = "0.1.6"
 end
