@@ -69,7 +69,7 @@ Get the Sumary Average by check id:
 ```ruby
 average = Pingdom::SummaryAverage.find check_id
 
-avergage.from # is a Time
+average.from # is a Time
 => 1970-01-01 01:00:00 +0100
 
 average.to # is a Time
