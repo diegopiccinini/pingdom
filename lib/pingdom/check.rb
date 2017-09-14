@@ -20,7 +20,7 @@ module Pingdom
     private
 
       def time_attributes
-        %q{created lasttesttime lastresponsetime }
+        %q{created lasttesttime lasterrortime }
       end
 
   end

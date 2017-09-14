@@ -55,6 +55,8 @@ describe Pingdom::Check do
       it { expect(subject.id).to be == id }
       it { expect(subject.name).to match subject.get('name') }
       it { expect(subject.created).to be_a Time }
+      it { expect(subject.lasttesttime).to be_a Time }
+      it { expect(subject.lasterrortime).to be_a Time }
 
     end
 
