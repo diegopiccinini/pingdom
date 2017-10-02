@@ -75,7 +75,7 @@ average.from # is a Time
 average.to # is a Time
 => 2017-09-05 15:43:53 +0100
 
-average.avgresponse # is a Integer
+average.responsetime.avgresponse # is a Integer
 => 381
 
 # with parameters
@@ -95,7 +95,7 @@ average.status.totalunknown
 average = Pingdom::SummaryAverage.find check_id, bycountry: true
 
 average.avgresponse # is an Array of Struct::AvgResponse
-r = average.avgresponse.firt
+r = average.avgresponse.first
 r.country
 => 'UK'
 

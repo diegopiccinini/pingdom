@@ -15,9 +15,7 @@ describe Pingdom::SummaryAverage do
 
       let(:average) { Pingdom::SummaryAverage.find id }
 
-      it { expect(average.responsetime).to include 'avgresponse' }
-      it { expect(average.responsetime).to include 'from' }
-      it { expect(average.responsetime).to include 'to' }
+      it { expect(average.avgresponse).to be_a Integer }
       it { expect(average.from).to be_a Time }
       it { expect(average.to).to be_a Time }
 
@@ -27,9 +25,11 @@ describe Pingdom::SummaryAverage do
 
       let(:average) { Pingdom::SummaryAverage.find id, includeuptime: true }
 
-      it { expect(average.status).to include 'totalup' }
-      it { expect(average.status).to include 'totaldown' }
-      it { expect(average.status).to include 'totalunknown' }
+      it { expect(average.avgresponse).to be_a Integer }
+
+      it { expect(average.status.totalup).to be_a Integer }
+      it { expect(average.status.totaldown).to be_a Integer }
+      it { expect(average.status.totalunknown).to be_a Integer }
 
     end
 

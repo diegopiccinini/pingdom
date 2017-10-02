@@ -2,6 +2,7 @@ module Pingdom
 
   Struct.new('AvgResponse',:countryiso, :avgresponse)
   Struct.new('ProbeResponse',:id, :avgresponse,:from,:n, :to)
+  Struct.new('AverageStatus',:totalup, :totaldown,:totalunknown)
 
   class SummaryAverage < Pingdom::Base
 
@@ -28,14 +29,25 @@ module Pingdom
 
     end
 
-    attr_accessor :responsetime, :status, :probe_responses
+    attr_accessor :responsetime, :probe_responses
 
     def avgresponse
-      data = responsetime['avgresponse'] || []
-      data.map do |v|
+      data = responsetime['avgresponse']
+
+      data.map! do |v|
         Struct::AvgResponse.new(v['countryiso'], v['avgresponse'])
-      end
+      end  if data.is_a?(Array)
+      data
     end
+
+    def status= v
+      @status=Struct::AverageStatus.new(v['totalup'],v['totaldown'],v['totalunknown'])
+    end
+
+    def status
+      @status
+    end
+
 
     def probe_responses
       responsetime.each_pair.map do |k,v|
